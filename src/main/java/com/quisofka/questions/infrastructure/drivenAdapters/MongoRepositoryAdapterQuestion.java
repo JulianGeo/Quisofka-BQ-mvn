@@ -32,13 +32,13 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
                 .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Initial"))
                 .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Java"))
-                .take(1)
+                .take(7)
                 .concatWith(
                         this.questionRepository
                                 .findAll()
                                 .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Initial"))
                                 .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Javascript"))
-                                .take(2)
+                                .take(8)
                 )
                 .map(question -> mapper.map(question, Question.class));
     }
@@ -50,13 +50,13 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
                 .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Basic"))
                 .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Java"))
-                .take(1)
+                .take(7)
                 .concatWith(
                         this.questionRepository
                                 .findAll()
-                                .filter(questionData -> questionData.getLevel().equals("Basic"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equals("Javascript"))
-                                .take(2)
+                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Basic"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Javascript"))
+                                .take(8)
                 )
                 .map(question -> mapper.map(question, Question.class));
     }
@@ -66,29 +66,29 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
         return this.questionRepository
                 .findAll()
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
-                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Basic"))
+                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
                 .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Java"))
-                .take(1)
+                .take(4)
                 .concatWith(
                         this.questionRepository
                                 .findAll()
                                 .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
                                 .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Javascript"))
-                                .take(2)
+                                .take(4)
                 )
                 .concatWith(
                         this.questionRepository
                                 .findAll()
                                 .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Descriptors"))
-                                .take(2)
+                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Empresarial"))
+                                .take(4)
                 )
                 .concatWith(
                         this.questionRepository
                                 .findAll()
                                 .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Arquitectura Empresarial"))
-                                .take(2)
+                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("DDD"))
+                                .take(3)
                 )
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
                 .map(question -> mapper.map(question, Question.class));
