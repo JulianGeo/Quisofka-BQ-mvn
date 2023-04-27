@@ -1,4 +1,4 @@
-package com.quisofka.questions.config;
+package com.quisofka.questions.application.config;
 
 import com.quisofka.questions.domain.model.gateways.QuestionRepositoryGateway;
 import com.quisofka.questions.domain.usecase.createquestion.CreateQuestionUseCase;

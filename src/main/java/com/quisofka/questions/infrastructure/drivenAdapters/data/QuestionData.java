@@ -12,6 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,7 +29,7 @@ public class QuestionData {
     @NotNull(message ="description is required")
     @Indexed(unique=true)
     private String description;
-    private Map<String, Boolean> answers;
+    private List<List<Object>> answers;
     @NotBlank(message="knowledgeArea is required")
     @NotNull(message ="knowledgeArea is required")
     @KnowledgeAreaEnum
