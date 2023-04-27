@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @OpenAPIDefinition(
@@ -14,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		),
 		servers = {
 		@Server(url = "http://localhost:8080/"),
-		@Server(url = "https://quisofka-b-production-c47e.up.railway.app/")
+		@Server(url = "https://quisofka-b-production-c47e.up.railway.app")
 })
 public class QuestionsApplication {
 
