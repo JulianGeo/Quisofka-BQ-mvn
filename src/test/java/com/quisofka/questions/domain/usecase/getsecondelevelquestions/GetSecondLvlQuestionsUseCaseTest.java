@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.mockito.Mockito.verify;
@@ -37,7 +38,7 @@ class GetSecondLvlQuestionsUseCaseTest {
                 new Question(
                         "id",
                         "Question description",
-                        new HashMap<>(),
+                        new ArrayList<>(),
                         "KnowledgeArea",
                         "descriptor",
                         "type",
@@ -45,7 +46,7 @@ class GetSecondLvlQuestionsUseCaseTest {
                 new Question(
                         "id2",
                         "Question description 2",
-                        new HashMap<>(),
+                        new ArrayList<>(),
                         "KnowledgeArea 2",
                         "descriptor 2",
                         "type 2",
