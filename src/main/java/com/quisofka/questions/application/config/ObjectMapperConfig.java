@@ -1,4 +1,4 @@
-package com.quisofka.questions.config;
+package com.quisofka.questions.application.config;
 
 import org.reactivecommons.utils.ObjectMapper;
 import org.reactivecommons.utils.ObjectMapperImp;

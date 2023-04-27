@@ -1,4 +1,4 @@
-package com.quisofka.questions.config;
+package com.quisofka.questions.application.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.CorsRegistry;
