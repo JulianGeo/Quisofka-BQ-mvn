@@ -6,9 +6,14 @@ import com.quisofka.questions.domain.model.gateways.QuestionRepositoryGateway;
 import com.quisofka.questions.infrastructure.drivenAdapters.data.QuestionData;
 import lombok.RequiredArgsConstructor;
 import org.reactivecommons.utils.ObjectMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Collections;
+
+import static java.util.Collections.shuffle;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,7 +23,7 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
     private final ObjectMapper mapper;
 
     @Override
-    public Flux<Question> getAllQuestions(){
+    public Flux<Question> getAllQuestions() {
         return this.questionRepository
                 .findAll()
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
@@ -27,69 +32,30 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
 
     @Override
     public Flux<Question> getFirstLvlQuestions() {
-        return this.questionRepository
-                .findAll()
+
+        return this.questionRepository.findByLevelAndKnowledgeArea("INITIAL", "Java", 7)
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
-                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Initial"))
-                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Java"))
-                .take(7)
                 .concatWith(
-                        this.questionRepository
-                                .findAll()
-                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Initial"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Javascript"))
-                                .take(8)
+                        this.questionRepository.findByLevelAndKnowledgeArea("INITIAL", "Javascript", 8)
+                                .switchIfEmpty(Mono.error(new Throwable("No questions available")))
                 )
                 .map(question -> mapper.map(question, Question.class));
     }
 
     @Override
     public Flux<Question> getSecondLvlQuestions() {
-        return this.questionRepository
-                .findAll()
+        return this.questionRepository.findByLevelAndKnowledgeArea("BASIC", "Java", 7)
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
-                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Basic"))
-                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Java"))
-                .take(7)
                 .concatWith(
-                        this.questionRepository
-                                .findAll()
-                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Basic"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Javascript"))
-                                .take(8)
+                        this.questionRepository.findByLevelAndKnowledgeArea("BASIC", "Javascript", 8)
                 )
                 .map(question -> mapper.map(question, Question.class));
     }
 
     @Override
     public Flux<Question> getThirdLvlQuestions() {
-        return this.questionRepository
-                .findAll()
-                .switchIfEmpty(Mono.error(new Throwable("No questions available")))
-                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
-                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Java"))
-                .take(4)
-                .concatWith(
-                        this.questionRepository
-                                .findAll()
-                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Javascript"))
-                                .take(4)
-                )
-                .concatWith(
-                        this.questionRepository
-                                .findAll()
-                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Empresarial"))
-                                .take(4)
-                )
-                .concatWith(
-                        this.questionRepository
-                                .findAll()
-                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("DDD"))
-                                .take(3)
-                )
+
+        return this.questionRepository.findByLevel("INTERMEDIATE", 15)
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
                 .map(question -> mapper.map(question, Question.class));
     }
@@ -107,13 +73,13 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
     public Mono<Question> createQuestion(Question question) {
         return Mono.just(question)
                 .flatMap(question1 -> {
-                    Question question2= Question.builder()
+                    Question question2=Question.builder()
                             .description(question1.getDescription())
                             .answers(question1.getAnswers())
-                            .descriptor(question1.getDescriptor())
-                            .knowledgeArea(question1.getKnowledgeArea())
-                            .type(question1.getType())
-                            .level(question1.getLevel())
+                            .descriptor(question1.getDescriptor().toUpperCase())
+                            .knowledgeArea(question1.getKnowledgeArea().toUpperCase())
+                            .type(question1.getType().toUpperCase())
+                            .level(question1.getLevel().toUpperCase())
                             .build();
                     return this.questionRepository.save(mapper.map(question2, QuestionData.class));
                 }).map(question3 -> mapper.map(question3, Question.class))
@@ -122,7 +88,7 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
 
 
     @Override
-    public Mono<Void> deleteAll(){
+    public Mono<Void> deleteAll() {
         return this.questionRepository.deleteAll()
                 .onErrorResume(Mono::error);
     }

@@ -94,6 +94,7 @@ public class RouterRest {
                         .onErrorResume(throwable -> ServerResponse.status(HttpStatus.NO_CONTENT).bodyValue(throwable.getMessage())));
     }
 
+
     @Bean
     @RouterOperation(path = "/quisofka/questions/third", produces = {
             MediaType.APPLICATION_JSON_VALUE},
@@ -133,7 +134,7 @@ public class RouterRest {
                         .flatMap(question -> ServerResponse.status(200)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .bodyValue(question))
-                        .onErrorResume(throwable -> ServerResponse.notFound().build()));
+                        .onErrorResume(throwable -> ServerResponse.status(HttpStatus.NO_CONTENT).bodyValue(throwable.getMessage())));
     }
 
     @Bean
