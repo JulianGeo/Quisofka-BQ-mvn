@@ -12,7 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +36,7 @@ class CreateQuestionUseCaseTest {
         var question = new Question(
                 "id",
                 "Question description",
-                new HashMap<>(),
+                new ArrayList<>(),
                 "KnowledgeArea",
                 "descriptor",
                 "type",

@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,7 +38,7 @@ class GetQuestionByIdUseCaseTest {
         var question = new Question(
                 "id",
                 "Question description",
-                new HashMap<>(),
+                new ArrayList<>(),
                 "KnowledgeArea",
                 "descriptor",
                 "type",
